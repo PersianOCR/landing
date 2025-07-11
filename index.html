@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PersianOCR - ابزار پیشرفته تشخیص متن فارسی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Enhanced Persian Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Shabnam:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Samim:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Enhanced RTL and Persian Typography */
+        * {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', 'Shabnam', 'Samim', 'Tahoma', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        /* Force RTL for all text elements */
+        h1, h2, h3, h4, h5, h6, p, span, div, a, button, li {
+            direction: rtl;
+            text-align: right;
+            unicode-bidi: embed;
+        }
+        
+        /* Enhanced gradient with better contrast */
+        .hero-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+        }
+        
+        /* Improved feature cards with RTL spacing */
+        .feature-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Enhanced file upload area */
+        .file-upload-area {
+            border: 3px dashed #c7d2fe;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+        }
+        
+        .file-upload-area:hover {
+            border-color: #818cf8;
+            background: linear-gradient(45deg, rgba(129, 140, 248, 0.1), rgba(129, 140, 248, 0.2));
+            transform: scale(1.02);
+        }
+        
+        /* Enhanced pricing cards */
+        .pricing-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* RTL specific adjustments */
+        .rtl-text {
+            direction: rtl;
+            text-align: right;
+            unicode-bidi: embed;
+        }
+        
+        /* Fix spacing for RTL */
+        .space-x-reverse > * + * {
+            margin-right: 0.75rem;
+            margin-left: 0;
+        }
+        
+        /* Enhanced button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3730a3, #6d28d9);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        /* Improved animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Enhanced loading animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Improved responsive design */
+        @media (max-width: 768px) {
+            .hero-gradient {
+                padding: 3rem 1rem;
+            }
+            
+            .feature-card {
+                margin-bottom: 1.5rem;
+            }
+            
+            .pricing-card {
+                margin-bottom: 2rem;
+            }
+        }
+        
+        /* Enhanced focus states for accessibility */
+        button:focus, input:focus {
+            outline: 2px solid #818cf8;
+            outline-offset: 2px;
+        }
+        
+        /* Waiting list signup form styles */
+        .signup-form {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .signup-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(129, 140, 248, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .signup-input:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+        }
+        
+        .signup-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 2rem;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .signup-button:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        .signup-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #047857;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 rtl-text">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-indigo-600">PersianOCR</h1>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="mr-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="#features" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">ویژگی‌ها</a>
+                        <a href="#pricing" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">قیمت‌گذاری</a>
+                        <a href="#waitlist" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">لیست انتظار</a>
+                        <a href="#contact" class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">تماس</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button type="button" class="bg-gray-200 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">باز کردن منوی اصلی</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-20 animate-fade-in-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 rtl-text">
+                PersianOCR
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto rtl-text leading-relaxed">
+                تکنولوژی جدیدترین OCR فارسی با دقت بالا
+            </p>
+            <p class="text-lg mb-12 max-w-4xl mx-auto rtl-text opacity-90">
+                تصاویر و فایل‌های PDF خود را آپلود کنید و متن فارسی موجود در آن‌ها را با دقت بیش از ۹۵٪ استخراج کنید. سریع، امن و قابل اعتماد.
+            </p>
+            
+            <!-- File Upload Area -->
+            <div class="max-w-2xl mx-auto">
+                <div class="file-upload-area rounded-2xl p-12 text-center cursor-pointer">
+                    <div class="mb-6">
+                        <i class="fas fa-cloud-upload-alt text-6xl text-indigo-200 mb-4"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4 rtl-text">فایل خود را اینجا بکشید</h3>
+                    <p class="text-lg mb-6 rtl-text opacity-80">یا کلیک کنید تا فایل انتخاب کنید</p>
+                    <div class="text-sm opacity-70 rtl-text">
+                        <i class="fas fa-file-pdf mr-2"></i>
+                        پشتیبانی از PDF، PNG، JPG، JPEG<br>
+                        (حداکثر ۲۰ مگابایت)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 rtl-text">چرا PersianOCR؟</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto rtl-text">
+                    ما بهترین تکنولوژی‌های موجود را برای ارائه دقیق‌ترین نتایج به کار می‌بریم
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                    <div class="text-indigo-600 mb-6">
+                        <i class="fas fa-bolt text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">سرعت بالا</h3>
+                    <p class="text-gray-600 rtl-text leading-relaxed">
+                        پردازش فایل‌ها در کمتر از ۳۰ ثانیه با استفاده از سرورهای قدرتمند و الگوریتم‌های بهینه شده
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                    <div class="text-indigo-600 mb-6">
+                        <i class="fas fa-bullseye text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">دقت بالا</h3>
+                    <p class="text-gray-600 rtl-text leading-relaxed">
+                        بیش از ۹۵٪ دقت در تشخیص متن فارسی با تکنولوژی پیشرفته Google Vision API
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                    <div class="text-indigo-600 mb-6">
+                        <i class="fas fa-shield-alt text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">امنیت کامل</h3>
+                    <p class="text-gray-600 rtl-text leading-relaxed">
+                        حفاظت کامل از اطلاعات شما با رمزنگاری پیشرفته و حذف خودکار فایل‌ها پس از پردازش
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                    <div class="text-indigo-600 mb-6">
+                        <i class="fas fa-globe text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">دسترسی جهانی</h3>
+                    <p class="text-gray-600 rtl-text leading-relaxed">
+                        در هر جای دنیا قابل استفاده بدون نیاز به نصب نرم‌افزار یا پلاگین
+                    </p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                    <div class="text-indigo-600 mb-6">
+                        <i class="fas fa-file-alt text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">فرمت‌های متنوع</h3>
+                    <p class="text-gray-600 rtl-text leading-relaxed">
+                        پشتیبانی کامل از PDF، PNG، JPG، JPEG و سایر فرمت‌های رایج تصویر
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                    <div class="text-indigo-600 mb-6">
+                        <i class="fas fa-code text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">API قدرتمند</h3>
+                    <p class="text-gray-600 rtl-text leading-relaxed">
+                        ادغام آسان با سیستم‌های موجود از طریق API کاملاً مستندسازی شده و RESTful
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waiting List Section -->
+    <section id="waitlist" class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 rtl-text">به لیست انتظار بپیوندید</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto rtl-text">
+                    اولین کسانی باشید که از سرویس PersianOCR مطلع می‌شوند و دسترسی زودهنگام دریافت می‌کنند
+                </p>
+            </div>
+            
+            <div class="signup-form max-w-2xl mx-auto">
+                <form id="waitlistForm" class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-lg font-medium text-gray-700 mb-2 rtl-text">آدرس ایمیل شما</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            class="signup-input w-full rtl-text"
+                            placeholder="example@email.com"
+                            dir="ltr"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="name" class="block text-lg font-medium text-gray-700 mb-2 rtl-text">نام شما (اختیاری)</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            class="signup-input w-full rtl-text"
+                            placeholder="نام و نام خانوادگی"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label for="organization" class="block text-lg font-medium text-gray-700 mb-2 rtl-text">سازمان/شرکت (اختیاری)</label>
+                        <input 
+                            type="text" 
+                            id="organization" 
+                            name="organization" 
+                            class="signup-input w-full rtl-text"
+                            placeholder="نام سازمان یا شرکت"
+                        >
+                    </div>
+                    
+                    <div class="text-center">
+                        <button 
+                            type="submit" 
+                            id="submitBtn"
+                            class="signup-button text-lg"
+                        >
+                            <i class="fas fa-paper-plane ml-2"></i>
+                            عضویت در لیست انتظار
+                        </button>
+                    </div>
+                    
+                    <div id="message" class="hidden"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4 rtl-text">قیمت‌گذاری شفاف</h2>
+                <p class="text-xl text-gray-600 rtl-text">فقط برای آنچه استفاده می‌کنید پرداخت کنید</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Free Plan -->
+                <div class="pricing-card bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">رایگان</h3>
+                        <p class="text-gray-600 mb-6 rtl-text">برای شروع و آزمایش</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-gray-900 rtl-text">۰ تومان</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-8 rtl-text">۱۰ صفحه رایگان در ماه</p>
+                        
+                        <ul class="text-right space-y-4 mb-8">
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                ۱۰ صفحه رایگان در ماه
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                دقت بالای تشخیص
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                پشتیبانی ایمیل
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                فرمت‌های متنوع
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition-colors rtl-text">
+                            شروع رایگان
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Pay Per Use Plan -->
+                <div class="pricing-card bg-indigo-50 rounded-2xl p-8 shadow-lg border-2 border-indigo-200 relative">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <span class="bg-indigo-600 text-white px-4 py-1 rounded-full text-sm font-semibold rtl-text">محبوب‌ترین</span>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">پرداخت به ازای استفاده</h3>
+                        <p class="text-gray-600 mb-6 rtl-text">برای استفاده منظم</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-indigo-600 rtl-text">۵۰۰۰ تومان</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-8 rtl-text">به ازای هر صفحه</p>
+                        
+                        <ul class="text-right space-y-4 mb-8">
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                پرداخت به ازای استفاده
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                بدون محدودیت حجم
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                دسترسی کامل به API
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                پشتیبانی ۲۴/۷
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full btn-primary text-white py-3 px-6 rounded-lg font-semibold rtl-text">
+                            شروع کنید
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 rtl-text">سازمانی</h3>
+                        <p class="text-gray-600 mb-6 rtl-text">برای کسب‌وکارها</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-gray-900 rtl-text">تماس بگیرید</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-8 rtl-text">قیمت ویژه و تخفیف حجمی</p>
+                        
+                        <ul class="text-right space-y-4 mb-8">
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                حجم بالا و نامحدود
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                تخفیف ویژه حجمی
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                پشتیبانی اختصاصی
+                            </li>
+                            <li class="flex items-center rtl-text">
+                                <i class="fas fa-check text-green-500 ml-3"></i>
+                                SLA تضمینی
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-gray-800 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-900 transition-colors rtl-text">
+                            تماس با فروش
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 hero-gradient text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-6 rtl-text">آماده شروع هستید؟</h2>
+            <p class="text-xl mb-8 rtl-text opacity-90">
+                همین الان شروع کنید و تجربه بهترین سرویس تشخیص متن فارسی را داشته باشید. بدون نیاز به ثبت‌نام، ۱۰ صفحه رایگان دریافت کنید.
+            </p>
+            <div class="space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse sm:flex sm:justify-center">
+                <button class="btn-primary text-white px-8 py-4 rounded-lg text-lg font-semibold rtl-text">
+                    <i class="fas fa-rocket ml-2"></i>
+                    شروع رایگان
+                </button>
+                <a href="#waitlist" class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors rtl-text">
+                    عضویت در لیست انتظار
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4 rtl-text">PersianOCR</h3>
+                    <p class="text-gray-300 mb-6 rtl-text leading-relaxed">
+                        پیشرفته‌ترین تکنولوژی تشخیص متن فارسی با دقت بالا و سرعت فوق‌العاده. برای تمام نیازهای شما در زمینه استخراج متن از تصاویر و اسناد.
+                    </p>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-telegram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 rtl-text">لینک‌های مفید</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-300 hover:text-white transition-colors rtl-text">ویژگی‌ها</a></li>
+                        <li><a href="#pricing" class="text-gray-300 hover:text-white transition-colors rtl-text">قیمت‌گذاری</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors rtl-text">مستندات API</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors rtl-text">راهنمای استفاده</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 rtl-text">پشتیبانی</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors rtl-text">تماس با ما</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors rtl-text">سوالات متداول</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors rtl-text">حریم خصوصی</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors rtl-text">شرایط استفاده</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+                <p class="text-gray-300 rtl-text">
+                    © ۲۰۲۵ PersianOCR. تمامی حقوق محفوظ است.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Waiting list form submission
+        document.getElementById('waitlistForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const organization = document.getElementById('organization').value;
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i>در حال ارسال...';
+            messageDiv.className = 'hidden';
+            
+            try {
+                // Google Apps Script Web App URL - REPLACE WITH YOUR ACTUAL URL
+                const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+                
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        name: name,
+                        organization: organization
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    messageDiv.className = 'success-message';
+                    messageDiv.innerHTML = '<i class="fas fa-check-circle ml-2"></i>با موفقیت به لیست انتظار اضافه شدید! به زودی از ما خبر خواهید داشت.';
+                    document.getElementById('waitlistForm').reset();
+                } else {
+                    throw new Error(result.message || 'خطا در ارسال اطلاعات');
+                }
+                
+            } catch (error) {
+                messageDiv.className = 'error-message';
+                messageDiv.innerHTML = '<i class="fas fa-exclamation-circle ml-2"></i>خطا در ارسال اطلاعات. لطفاً دوباره تلاش کنید.';
+                console.error('Error:', error);
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane ml-2"></i>عضویت در لیست انتظار';
+                messageDiv.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+live
