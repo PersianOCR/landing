@@ -19,9 +19,17 @@
     <meta property="og:url" content="https://persianocr.com">
     <meta property="og:site_name" content="Persian OCR">
     <meta property="og:image" content="https://persianocr.com/assets/og-image.png">
+    <meta property="og:image:secure_url" content="https://persianocr.com/assets/og-image.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="پرشین OCR - تشخیص متن فارسی با هوش مصنوعی">
+    <meta property="og:locale" content="fa_IR">
+    
+    <!-- Additional image for 1:1 ratio (better for some platforms) -->
+    <meta property="og:image" content="https://persianocr.com/assets/og-image-square.png">
+    <meta property="og:image:width" content="1080">
+    <meta property="og:image:height" content="1080">
     <meta property="og:locale" content="fa_IR">
     
     <!-- Twitter Card Meta Tags -->
@@ -1179,36 +1187,63 @@
                 // Submit form
                 form.submit();
 
-                // Wait a moment for submission, then show success and increment counter
-                setTimeout(() => {
-                    // Show success message and increment counter
-                    showMessage('success', 'با تشکر! شما با موفقیت به لیست انتظار اضافه شدید. به زودی با شما تماس خواهیم گرفت.');
-                    document.getElementById('waitlistForm').reset();
+                // Listen for iframe load to verify submission success
+                let submissionHandled = false;
+                iframe.onload = function() {
+                    if (submissionHandled) return;
+                    submissionHandled = true;
+                    
+                    try {
+                        // Check if submission was successful
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const responseText = iframeDoc.body.textContent || iframeDoc.body.innerText;
+                        
+                        if (responseText && !responseText.includes('Error') && !responseText.includes('TypeError')) {
+                            // Success - show message and increment counters
+                            showMessage('success', 'با تشکر! شما با موفقیت به لیست انتظار اضافه شدید. به زودی با شما تماس خواهیم گرفت.');
+                            document.getElementById('waitlistForm').reset();
 
-                    // Increment main signup counter by 1 and save to localStorage
-                    const counter = document.getElementById('signup-counter');
-                    const current = parseInt(counter.textContent.match(/\d+/)[0]);
-                    const newCount = current + 1;
-                    counter.textContent = `${newCount} نفر اخیراً ثبت‌نام کرده‌اند!`;
-                    localStorage.setItem('persianocr_signup_count', newCount);
+                            // Increment main signup counter by 1 and save to localStorage
+                            const counter = document.getElementById('signup-counter');
+                            const current = parseInt(counter.textContent.match(/\d+/)[0]);
+                            const newCount = current + 1;
+                            counter.textContent = `${newCount} نفر اخیراً ثبت‌نام کرده‌اند!`;
+                            localStorage.setItem('persianocr_signup_count', newCount);
 
-                    // Increment daily signup counter by 1 and save to localStorage
-                    const dailyCounter = document.getElementById('daily-signup-counter');
-                    const dailyCurrent = parseInt(dailyCounter.textContent.match(/[۰-۹\d]+/)[0].replace(/[۰-۹]/g, d => '0123456789'['۰۱۲۳۴۵۶۷۸۹'.indexOf(d)]));
-                    const newDailyCount = dailyCurrent + 1;
-                    // Convert to Persian numerals
-                    const persianNewDailyCount = newDailyCount.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
-                    dailyCounter.textContent = `${persianNewDailyCount} نفر در ۲۴ ساعت گذشته ثبت‌نام کرده‌اند`;
-                    localStorage.setItem('persianocr_daily_count', newDailyCount);
+                            // Increment daily signup counter by 1 and save to localStorage
+                            const dailyCounter = document.getElementById('daily-signup-counter');
+                            const dailyCurrent = parseInt(dailyCounter.textContent.match(/[۰-۹\d]+/)[0].replace(/[۰-۹]/g, d => '0123456789'['۰۱۲۳۴۵۶۷۸۹'.indexOf(d)]));
+                            const newDailyCount = dailyCurrent + 1;
+                            // Convert to Persian numerals
+                            const persianNewDailyCount = newDailyCount.toString().replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+                            dailyCounter.textContent = `${persianNewDailyCount} نفر در ۲۴ ساعت گذشته ثبت‌نام کرده‌اند`;
+                            localStorage.setItem('persianocr_daily_count', newDailyCount);
 
-                    // Track conversion
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'signup', {
-                            event_category: 'waitlist',
-                            event_label: 'persianocr_waitlist'
-                        });
+                            // Track conversion
+                            if (typeof gtag !== 'undefined') {
+                                gtag('event', 'signup', {
+                                    event_category: 'waitlist',
+                                    event_label: 'persianocr_waitlist'
+                                });
+                            }
+                        } else {
+                            // Error in submission
+                            showMessage('error', 'خطا در ارسال اطلاعات. لطفاً دوباره تلاش کنید.');
+                        }
+                    } catch (error) {
+                        // Cross-origin or other error - assume success for now
+                        console.warn('Could not verify submission status:', error);
+                        showMessage('success', 'درخواست شما ارسال شد. در صورت موفقیت، به زودی با شما تماس خواهیم گرفت.');
                     }
-                }, 1000);
+                };
+
+                // Fallback timeout in case iframe doesn't load
+                setTimeout(() => {
+                    if (!submissionHandled) {
+                        submissionHandled = true;
+                        showMessage('error', 'خطا در ارسال اطلاعات. لطفاً دوباره تلاش کنید.');
+                    }
+                }, 5000);
 
                 // Clean up form and iframe after a longer delay
                 setTimeout(() => {
